@@ -19,6 +19,11 @@ import './style.scss';
  */
 import Edit from './edit';
 import metadata from './block.json';
+/**
+ * WordPress dependencies
+ */
+import { __ } from '@wordpress/i18n';
+import { postList as icon } from '@wordpress/icons';
 
 /**
  * Every block starts by registering a new block type definition.
@@ -31,3 +36,17 @@ registerBlockType( metadata.name, {
 	 */
 	edit: Edit,
 } );
+export const name = 'core/latest-posts';
+
+export const settings = {
+	title: __( 'Latest Posts' ),
+	description: __( 'Display a list of your most recent posts.' ),
+	icon,
+	category: 'widgets',
+	keywords: [ __( 'recent posts' ) ],
+	supports: {
+		align: true,
+		html: false,
+	},
+	edit,
+};

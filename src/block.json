@@ -11,6 +11,54 @@
 	"supports": {
 		"html": false
 	},
+	"attributes": {
+        "align": {
+            "type": "string",
+			"enum": [ "large", "small" ]
+        },
+		"className": {
+            "type": "string"
+        },
+		"categories": {
+            "type": "string"
+        },
+		"postsToShow": {
+            "type": "number",
+            "default": 5
+        },
+		"displayPostContent": {
+            "type": "boolean",
+            "default": false
+        },
+		"displayPostContentRadio": {
+            "type": "string",
+            "default": "excerpt"
+        },
+		"excerptLength": {
+            "type": "number",
+            "default": 55
+        },
+		"displayPostDate": {
+            "type": "boolean",
+            "default": false
+        },
+		"postLayout": {
+            "type": "string",
+            "default": "list"
+        },
+		"columns": {
+            "type": "number",
+            "default": 3
+        },
+		"order": {
+            "type": "string",
+            "default": "desc"
+        },
+		"orderBy": {
+            "type": "string",
+            "default": "date"
+        }
+    },
 	"textdomain": "em-block-posts-grid",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
