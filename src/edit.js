@@ -177,7 +177,7 @@ class LatestPostsEdit extends Component {
 		];
 
 		const dateFormat = __experimentalGetSettings().formats.date;
-
+console.log(displayPosts);
 		return (
 			<>
 				{ inspectorControls }
@@ -203,6 +203,7 @@ class LatestPostsEdit extends Component {
 						excerpt = excerptElement.textContent || excerptElement.innerText || '';
 						return (
 							<li key={ i }>
+								<img src={ post.fimg_url }/>
 								<a href={ post.link } target="_blank" rel="noreferrer noopener">
 									{ titleTrimmed ? <RawHTML>{ titleTrimmed }</RawHTML> : __( '(no title)' ) }
 								</a>

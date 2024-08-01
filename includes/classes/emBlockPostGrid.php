@@ -41,8 +41,31 @@ if (!class_exists('emBlockPostGrid')) {
             'init',
             [$this, 'em_block_posts_grid_em_block_posts_grid_block_init']
         );
+
+        add_action(
+            'rest_api_init',
+            [$this, 'register_rest_images']
+        );
+
     }
-          
+
+    public function register_rest_images(){
+        register_rest_field( array('post'),
+            'fimg_url',
+            array(
+                'get_callback'    =>  [$this, 'get_rest_featured_image'] ,
+                'update_callback' => null,
+                'schema'          => null,
+            )
+        );
+    }
+    public function get_rest_featured_image( $object, $field_name, $request ) {
+        if( $object['featured_media'] ){
+            $img = wp_get_attachment_image_src( $object['featured_media'], 'app-thumb' );
+            return $img[0];
+        }
+        return false;
+    }          
     public function em_block_posts_grid_content( $attributes ) {
         $args = array(
             'posts_per_page'   => $attributes['postsToShow'],
@@ -64,11 +87,12 @@ if (!class_exists('emBlockPostGrid')) {
     
         foreach ( $recent_posts as $post ) {
             $title = get_the_title( $post );
+            $image_url = get_the_post_thumbnail_url($post);
             if ( ! $title ) {
                 $title = __( '(no title)' );
             }
             $list_items_markup .= sprintf(
-                '<li><a href="%1$s">%2$s</a>',
+                '<li><img src="' . $image_url . '" /><a href="%1$s">%2$s</a>',
                 esc_url( get_permalink( $post ) ),
                 $title
             );
