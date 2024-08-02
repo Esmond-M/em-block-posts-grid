@@ -1,4 +1,4 @@
-Project: github.com/Esmond-M/em-block-posts-grid](https://github.com/Esmond-M/em-block-posts-grid)<br>
+Project: github.com/Esmond-M/em-block-posts-grid](https://github.com/Esmond-M/em-block-posts-grid)
 Author: [esmondmccain.com](https://esmondmccain.com/)
 
 ## Features
