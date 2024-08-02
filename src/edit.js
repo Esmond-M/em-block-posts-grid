@@ -68,6 +68,7 @@ class LatestPostsEdit extends Component {
 		const {
 			displayPostContentRadio,
 			displayPostContent,
+			displayFeaturedImage,
 			displayPostDate,
 			postLayout,
 			columns,
@@ -85,7 +86,7 @@ class LatestPostsEdit extends Component {
 						label={ __( 'Post Content' ) }
 						checked={ displayPostContent }
 						onChange={ ( value ) => setAttributes( { displayPostContent: value } ) }
-					/>
+					/>	
 					{ displayPostContent && (
 						<RadioControl
 							label={ __( 'Show:' ) }
@@ -108,6 +109,14 @@ class LatestPostsEdit extends Component {
 					) }
 				</PanelBody>
 
+				<PanelBody title={ __( 'Featured Image settings' ) }>
+					<ToggleControl
+						label={ __( 'Featured Image' ) }
+						checked={ displayFeaturedImage }
+						onChange={ ( value ) => setAttributes( { displayFeaturedImage: value } ) }
+					/>
+				</PanelBody>
+				
 				<PanelBody title={ __( 'Post meta settings' ) }>
 					<ToggleControl
 						label={ __( 'Display post date' ) }
@@ -203,7 +212,10 @@ console.log(displayPosts);
 						excerpt = excerptElement.textContent || excerptElement.innerText || '';
 						return (
 							<li key={ i }>
-								<img src={ post.fimg_url }/>
+								{ displayFeaturedImage && (
+									<img src={ post.fimg_url }/>
+								) }								
+								
 								<a href={ post.link } target="_blank" rel="noreferrer noopener">
 									{ titleTrimmed ? <RawHTML>{ titleTrimmed }</RawHTML> : __( '(no title)' ) }
 								</a>

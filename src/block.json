@@ -30,6 +30,10 @@
             "type": "boolean",
             "default": false
         },
+        "displayFeaturedImage": {
+            "type": "boolean",
+            "default": false
+        },
 		"displayPostContentRadio": {
             "type": "string",
             "default": "excerpt"

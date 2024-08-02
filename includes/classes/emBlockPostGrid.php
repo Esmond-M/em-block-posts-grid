@@ -91,11 +91,21 @@ if (!class_exists('emBlockPostGrid')) {
             if ( ! $title ) {
                 $title = __( '(no title)' );
             }
-            $list_items_markup .= sprintf(
-                '<li><img src="' . $image_url . '" /><a href="%1$s">%2$s</a>',
-                esc_url( get_permalink( $post ) ),
-                $title
-            );
+
+            if ( isset( $attributes['displayFeaturedImage'] ) && $attributes['displayFeaturedImage']=== true ) {
+                $list_items_markup .= sprintf(
+                    '<li><img src="' . $image_url . '" /><a href="%1$s">%2$s</a>',
+                    esc_url( get_permalink( $post ) ),
+                    $title
+                );   
+            }
+            else{
+                $list_items_markup .= sprintf(
+                    '<li><a href="%1$s">%2$s</a>',
+                    esc_url( get_permalink( $post ) ),
+                    $title
+                );
+            }
     
             if ( isset( $attributes['displayPostDate'] ) && $attributes['displayPostDate'] ) {
                 $list_items_markup .= sprintf(
