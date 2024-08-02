@@ -68,6 +68,7 @@ class LatestPostsEdit extends Component {
 		const {
 			displayPostContentRadio,
 			displayPostContent,
+			displayFeaturedImage,
 			displayPostDate,
 			postLayout,
 			columns,
@@ -85,7 +86,7 @@ class LatestPostsEdit extends Component {
 						label={ __( 'Post Content' ) }
 						checked={ displayPostContent }
 						onChange={ ( value ) => setAttributes( { displayPostContent: value } ) }
-					/>
+					/>	
 					{ displayPostContent && (
 						<RadioControl
 							label={ __( 'Show:' ) }
@@ -108,6 +109,14 @@ class LatestPostsEdit extends Component {
 					) }
 				</PanelBody>
 
+				<PanelBody title={ __( 'Featured Image settings' ) }>
+					<ToggleControl
+						label={ __( 'Featured Image' ) }
+						checked={ displayFeaturedImage }
+						onChange={ ( value ) => setAttributes( { displayFeaturedImage: value } ) }
+					/>
+				</PanelBody>
+				
 				<PanelBody title={ __( 'Post meta settings' ) }>
 					<ToggleControl
 						label={ __( 'Display post date' ) }
@@ -186,7 +195,7 @@ class LatestPostsEdit extends Component {
 				</BlockControls>
 				<ul
 					className={ classnames( this.props.className, {
-						'wp-block-latest-posts__list': true,
+						'em-block-latest-posts__list': true,
 						'is-grid': postLayout === 'grid',
 						'has-dates': displayPostDate,
 						[ `columns-${ columns }` ]: postLayout === 'grid',
@@ -203,19 +212,23 @@ class LatestPostsEdit extends Component {
 						excerpt = excerptElement.textContent || excerptElement.innerText || '';
 						return (
 							<li key={ i }>
+								{ displayFeaturedImage && (
+									<img class="em-block-featured-img" src={ post.fimg_url }/>
+								) }								
+								
 								<a href={ post.link } target="_blank" rel="noreferrer noopener">
 									{ titleTrimmed ? <RawHTML>{ titleTrimmed }</RawHTML> : __( '(no title)' ) }
 								</a>
 								{ displayPostDate && post.date_gmt && (
 									<time
 										dateTime={ format( 'c', post.date_gmt ) }
-										className="wp-block-latest-posts__post-date"
+										className="em-block-latest-posts__post-date"
 									>
 										{ dateI18n( dateFormat, post.date_gmt ) }
 									</time>
 								) }
 								{ displayPostContent && displayPostContentRadio === 'excerpt' && (
-									<div className="wp-block-latest-posts__post-excerpt">
+									<div className="em-block-latest-posts__post-excerpt">
 										<RawHTML key="html">
 											{ excerptLength < excerpt.trim().split( ' ' ).length
 												? excerpt
@@ -235,7 +248,7 @@ class LatestPostsEdit extends Component {
 									</div>
 								) }
 								{ displayPostContent && displayPostContentRadio === 'full_post' && (
-									<div className="wp-block-latest-posts__post-full-content">
+									<div className="em-block-latest-posts__post-full-content">
 										<RawHTML key="html">{ post.content.raw.trim() }</RawHTML>
 									</div>
 								) }

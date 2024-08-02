@@ -1,1 +1,0 @@
-console.log("Hello World! (from em-block-posts-grid-em-block-posts-grid block)");

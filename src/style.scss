@@ -5,8 +5,55 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-em-block-posts-grid-em-block-posts-grid {
-	background-color: #21759b;
-	color: #fff;
-	padding: 2px;
+ .em-block-latest-posts {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.em-block-latest-posts li {
+    width:30%;
+    padding: 0 10px 10px 10px;
+    list-style: none;    
+}
+.em-block-latest-posts__post-date {
+    display: block;
+}
+.em-block-featured-img {
+    display: block;    
+    width: 100%;
+    max-width: 260px;
+}
+.em-block-latest-posts__list{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+.em-block-latest-posts__list li {
+    width:30%;
+    padding: 0 10px 10px 10px;
+    list-style: none;  
+}
+@media only screen 
+and (max-width : 1199px) {
+
+    .em-block-latest-posts {
+        flex-direction: column;
+    }
+    .em-block-latest-posts li {
+        width:100%;
+    }
+    .em-block-latest-posts__list{
+        flex-direction: column;
+    }
+    .em-block-latest-posts__list li {
+        width:100%; 
+    }
 }
