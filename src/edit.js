@@ -186,7 +186,7 @@ class LatestPostsEdit extends Component {
 		];
 
 		const dateFormat = __experimentalGetSettings().formats.date;
-console.log(displayPosts);
+
 		return (
 			<>
 				{ inspectorControls }
@@ -195,7 +195,7 @@ console.log(displayPosts);
 				</BlockControls>
 				<ul
 					className={ classnames( this.props.className, {
-						'wp-block-latest-posts__list': true,
+						'em-block-latest-posts__list': true,
 						'is-grid': postLayout === 'grid',
 						'has-dates': displayPostDate,
 						[ `columns-${ columns }` ]: postLayout === 'grid',
@@ -213,7 +213,7 @@ console.log(displayPosts);
 						return (
 							<li key={ i }>
 								{ displayFeaturedImage && (
-									<img src={ post.fimg_url }/>
+									<img class="em-block-featured-img" src={ post.fimg_url }/>
 								) }								
 								
 								<a href={ post.link } target="_blank" rel="noreferrer noopener">
@@ -222,13 +222,13 @@ console.log(displayPosts);
 								{ displayPostDate && post.date_gmt && (
 									<time
 										dateTime={ format( 'c', post.date_gmt ) }
-										className="wp-block-latest-posts__post-date"
+										className="em-block-latest-posts__post-date"
 									>
 										{ dateI18n( dateFormat, post.date_gmt ) }
 									</time>
 								) }
 								{ displayPostContent && displayPostContentRadio === 'excerpt' && (
-									<div className="wp-block-latest-posts__post-excerpt">
+									<div className="em-block-latest-posts__post-excerpt">
 										<RawHTML key="html">
 											{ excerptLength < excerpt.trim().split( ' ' ).length
 												? excerpt
@@ -248,7 +248,7 @@ console.log(displayPosts);
 									</div>
 								) }
 								{ displayPostContent && displayPostContentRadio === 'full_post' && (
-									<div className="wp-block-latest-posts__post-full-content">
+									<div className="em-block-latest-posts__post-full-content">
 										<RawHTML key="html">{ post.content.raw.trim() }</RawHTML>
 									</div>
 								) }

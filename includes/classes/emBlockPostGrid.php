@@ -94,7 +94,7 @@ if (!class_exists('emBlockPostGrid')) {
 
             if ( isset( $attributes['displayFeaturedImage'] ) && $attributes['displayFeaturedImage']=== true ) {
                 $list_items_markup .= sprintf(
-                    '<li><img src="' . $image_url . '" /><a href="%1$s">%2$s</a>',
+                    '<li><img class="em-block-featured-img" src="' . $image_url . '" /><a href="%1$s">%2$s</a>',
                     esc_url( get_permalink( $post ) ),
                     $title
                 );   
@@ -109,7 +109,7 @@ if (!class_exists('emBlockPostGrid')) {
     
             if ( isset( $attributes['displayPostDate'] ) && $attributes['displayPostDate'] ) {
                 $list_items_markup .= sprintf(
-                    '<time datetime="%1$s" class="wp-block-latest-posts__post-date">%2$s</time>',
+                    '<time datetime="%1$s" class="em-block-latest-posts__post-date">%2$s</time>',
                     esc_attr( get_the_date( 'c', $post ) ),
                     esc_html( get_the_date( '', $post ) )
                 );
@@ -124,7 +124,7 @@ if (!class_exists('emBlockPostGrid')) {
                 $trimmed_excerpt = esc_html( wp_trim_words( $post_excerpt, $excerpt_length, ' &hellip; ' ) );
     
                 $list_items_markup .= sprintf(
-                    '<div class="wp-block-latest-posts__post-excerpt">%1$s',
+                    '<div class="em-block-latest-posts__post-excerpt">%1$s',
                     $trimmed_excerpt
                 );
     
@@ -144,7 +144,7 @@ if (!class_exists('emBlockPostGrid')) {
             if ( isset( $attributes['displayPostContent'] ) && $attributes['displayPostContent']
                 && isset( $attributes['displayPostContentRadio'] ) && 'full_post' === $attributes['displayPostContentRadio'] ) {
                 $list_items_markup .= sprintf(
-                    '<div class="wp-block-latest-posts__post-full-content">%1$s</div>',
+                    '<div class="em-block-latest-posts__post-full-content">%1$s</div>',
                     wp_kses_post( html_entity_decode( $post->post_content, ENT_QUOTES, get_option( 'blog_charset' ) ) )
                 );
             }
@@ -152,7 +152,7 @@ if (!class_exists('emBlockPostGrid')) {
             $list_items_markup .= "</li>\n";
         }
     
-        $class = 'wp-block-latest-posts wp-block-latest-posts__list';
+        $class = 'em-block-latest-posts em-block-latest-posts__list';
         if ( isset( $attributes['align'] ) ) {
             $class .= ' align' . $attributes['align'];
         }
