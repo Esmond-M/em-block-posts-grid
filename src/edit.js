@@ -20,6 +20,7 @@ import {
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
+import { SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
@@ -31,6 +32,9 @@ import { withSelect } from '@wordpress/data';
 const CATEGORIES_LIST_QUERY = {
 	per_page: -1,
 };
+const PTYPES_LIST_QUERY = {
+	context: "view",
+};
 const MAX_POSTS_COLUMNS = 6;
 
 class LatestPostsEdit extends Component {
@@ -38,6 +42,9 @@ class LatestPostsEdit extends Component {
 		super( ...arguments );
 		this.state = {
 			categoriesList: [],
+		};
+		this.state = {
+			pTypesList: [],
 		};
 	}
 
@@ -56,6 +63,21 @@ class LatestPostsEdit extends Component {
 					this.setState( { categoriesList: [] } );
 				}
 			} );
+
+		this.fetchRequest = apiFetch( {
+			path: addQueryArgs( `/wp/v2/types`, PTYPES_LIST_QUERY ),
+		} )
+
+			.then( ( pTypesList ) => {
+				if ( this.isStillMounted ) {
+					this.setState( { pTypesList } );
+				}
+			} )
+			.catch( () => {
+				if ( this.isStillMounted ) {
+					this.setState( { pTypesList: [] } );
+				}
+			} );
 	}
 
 	componentWillUnmount() {
@@ -64,7 +86,7 @@ class LatestPostsEdit extends Component {
 
 	render() {
 		const { attributes, setAttributes, latestPosts } = this.props;
-		const { categoriesList } = this.state;
+		const { categoriesList , pTypesList } = this.state;
 		const {
 			displayPostContentRadio,
 			displayPostContent,
@@ -76,11 +98,36 @@ class LatestPostsEdit extends Component {
 			orderBy,
 			categories,
 			postsToShow,
+			postType,
 			excerptLength,
 		} = attributes;
-
+		const result = Object.keys(pTypesList).reduce((acc, key) => {
+			acc.push({ key, value: pTypesList[key] });
+			return acc;
+		}, []);
+		result.map( (row, rowIndex) => {
+			var esmondname = row.value.name;
+			var esmondslug = row.value.slug;
+			console.log(row ??'no item', esmondname);
+			([{ label: {esmondname } , value: {esmondslug}  },])
+	})
 		const inspectorControls = (
 			<InspectorControls>
+				<PanelBody title={ __( 'Post type settings' ) }>
+					<SelectControl
+						label="Post type"
+						value={ attributes.postType }
+						options={	
+						
+							result.map( (row, rowIndex) => {
+							var esmondname = row.value.name;
+							var esmondslug = row.value.slug;
+							console.log(row ??'no item', esmondname);
+							([{ label: {esmondname } , value: {esmondslug}  } ?? 'this is not here '])
+					}) }
+						onChange={ (value) => setAttributes({ postType: value }) }
+					/>				
+				</PanelBody>				
 				<PanelBody title={ __( 'Post content settings' ) }>
 					<ToggleControl
 						label={ __( 'Post Content' ) }
