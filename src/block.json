@@ -50,6 +50,10 @@
             "type": "string",
             "default": "list"
         },
+        "postType": {
+            "type": "string",
+            "default": "post"
+        },
 		"columns": {
             "type": "number",
             "default": 3
