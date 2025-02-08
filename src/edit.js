@@ -245,11 +245,29 @@ class LatestPostsEdit extends Component {
 					} ) }
 				>
 					{ displayPosts.map( ( post, i ) => {
-						const titleTrimmed = post.title.rendered.trim();
-						let excerpt = post.excerpt.rendered;
-						if ( post.excerpt.raw === '' ) {
-							excerpt = post.content.raw;
+						if(post.title !== undefined){
+							var titleTrimmed = post.title.rendered.trim();
 						}
+						else{
+							var titleTrimmed = "No Title";
+						}
+
+                        if(post.excerpt !== undefined ){
+							var excerpt = post.excerpt.rendered;
+						}
+						else{
+							var excerpt = 'No Excerpt';
+						}
+			            if( post.excerpt  !== undefined){
+							if ( post.excerpt.raw === '' ) {
+								excerpt = post.content.raw;
+							}
+						}
+						else{
+							var excerpt = 'No Excerpt';
+						}
+						
+						
 						const excerptElement = document.createElement( 'div' );
 						excerptElement.innerHTML = excerpt;
 						excerpt = excerptElement.textContent || excerptElement.innerText || '';
