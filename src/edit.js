@@ -1,3 +1,4 @@
+
 /**
  * External dependencies
  */
@@ -14,13 +15,13 @@ import {
 	QueryControls,
 	RadioControl,
 	RangeControl,
+	SelectControl,
 	Spinner,
 	ToggleControl,
 	ToolbarGroup,
 } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
-import { SelectControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
@@ -44,7 +45,7 @@ class LatestPostsEdit extends Component {
 			categoriesList: [],
 		};
 		this.state = {
-			pTypesList: [],
+			postTypesList: [],
 		};
 	}
 
@@ -68,14 +69,14 @@ class LatestPostsEdit extends Component {
 			path: addQueryArgs( `/wp/v2/types`, PTYPES_LIST_QUERY ),
 		} )
 
-			.then( ( pTypesList ) => {
+			.then( ( postTypesList ) => {
 				if ( this.isStillMounted ) {
-					this.setState( { pTypesList } );
+					this.setState( { postTypesList } );
 				}
 			} )
 			.catch( () => {
 				if ( this.isStillMounted ) {
-					this.setState( { pTypesList: [] } );
+					this.setState( { postTypesList: [] } );
 				}
 			} );
 	}
@@ -86,7 +87,7 @@ class LatestPostsEdit extends Component {
 
 	render() {
 		const { attributes, setAttributes, latestPosts } = this.props;
-		const { categoriesList , pTypesList } = this.state;
+		const { categoriesList , postTypesList } = this.state;
 		const {
 			displayPostContentRadio,
 			displayPostContent,
@@ -101,33 +102,28 @@ class LatestPostsEdit extends Component {
 			postType,
 			excerptLength,
 		} = attributes;
-		const result = Object.keys(pTypesList).reduce((acc, key) => {
-			acc.push({ key, value: pTypesList[key] });
+		const pTypesListArr = Object.keys(postTypesList).reduce((acc, key) => {
+			acc.push({ key, value: postTypesList[key] });
 			return acc;
 		}, []);
-		result.map( (row, rowIndex) => {
-			var esmondname = row.value.name;
-			var esmondslug = row.value.slug;
-			console.log(row ??'no item', esmondname);
-			([{ label: {esmondname } , value: {esmondslug}  },])
-	})
-		const inspectorControls = (
+
+		const inspectorControls =  (
+			
 			<InspectorControls>
 				<PanelBody title={ __( 'Post type settings' ) }>
-					<SelectControl
-						label="Post type"
-						value={ attributes.postType }
-						options={	
-						
-							result.map( (row, rowIndex) => {
-							var esmondname = row.value.name;
-							var esmondslug = row.value.slug;
-							console.log(row ??'no item', esmondname);
-							([{ label: {esmondname } , value: {esmondslug}  } ?? 'this is not here '])
-					}) }
-						onChange={ (value) => setAttributes({ postType: value }) }
-					/>				
-				</PanelBody>				
+	`				<SelectControl
+						label="Post Type"
+						value={ postType  }
+						onChange={ ( value ) => setAttributes( { postType: value } ) }
+						>
+						{pTypesListArr.map( (row, rowIndex) => (
+
+						<option value={row.value.slug}>{ row.value.name}</option>
+						))}
+
+					</SelectControl>
+				</PanelBody>
+
 				<PanelBody title={ __( 'Post content settings' ) }>
 					<ToggleControl
 						label={ __( 'Post Content' ) }
@@ -309,7 +305,7 @@ class LatestPostsEdit extends Component {
 }
 
 export default withSelect( ( select, props ) => {
-	const { postsToShow, order, orderBy, categories } = props.attributes;
+	const { postsToShow, order, orderBy, categories , postType} = props.attributes;
 	const { getEntityRecords } = select( 'core' );
 	const latestPostsQuery = pickBy(
 		{
@@ -317,10 +313,11 @@ export default withSelect( ( select, props ) => {
 			order,
 			orderby: orderBy,
 			per_page: postsToShow,
+			post_type: postType,
 		},
 		( value ) => ! isUndefined( value )
 	);
 	return {
-		latestPosts: getEntityRecords( 'postType', 'post', latestPostsQuery ),
+		latestPosts: getEntityRecords( 'postType', postType, latestPostsQuery ),
 	};
 } )( LatestPostsEdit );

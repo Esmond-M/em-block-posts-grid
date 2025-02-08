@@ -68,6 +68,7 @@ if (!class_exists('emBlockPostGrid')) {
     }          
     public function em_block_posts_grid_content( $attributes ) {
         $args = array(
+            'post_type'        => $attributes['postType'],
             'posts_per_page'   => $attributes['postsToShow'],
             'post_status'      => 'publish',
             'order'            => $attributes['order'],
