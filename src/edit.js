@@ -20,8 +20,6 @@ import {
 	ToggleControl,
 	ToolbarGroup,
 } from '@wordpress/components';
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
@@ -30,34 +28,17 @@ import { withSelect } from '@wordpress/data';
 /**
  * Module Constants
  */
-const CATEGORIES_LIST_QUERY = {
-	per_page: -1,
-};
+
 const MAX_POSTS_COLUMNS = 6;
 
 class LatestPostsEdit extends Component {
 	constructor() {
 		super( ...arguments );
-		this.state = {
-			categoriesList: [],
-		};
 	}
 
 	componentDidMount() {
 		this.isStillMounted = true;
-		this.fetchRequest = apiFetch( {
-			path: addQueryArgs( `/wp/v2/categories`, CATEGORIES_LIST_QUERY ),
-		} )
-			.then( ( categoriesList ) => {
-				if ( this.isStillMounted ) {
-					this.setState( { categoriesList } );
-				}
-			} )
-			.catch( () => {
-				if ( this.isStillMounted ) {
-					this.setState( { categoriesList: [] } );
-				}
-			} );
+
 	}
 
 	componentWillUnmount() {
@@ -66,7 +47,6 @@ class LatestPostsEdit extends Component {
 
 	render() {
 		const { attributes, setAttributes, latestPosts } = this.props;
-		const { categoriesList } = this.state;
 		const {
 			displayPostContentRadio,
 			displayPostContent,
@@ -76,7 +56,6 @@ class LatestPostsEdit extends Component {
 			columns,
 			order,
 			orderBy,
-			categories,
 			postsToShow,
 			postType,
 			excerptLength,
@@ -84,7 +63,7 @@ class LatestPostsEdit extends Component {
 		 const postTypesList =  [
 			{
 				"name": "Posts",
-				"Slug": "post",
+				"slug": "post",
 			},
 			{
 				"name": "Pages",
