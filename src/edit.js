@@ -33,9 +33,6 @@ import { withSelect } from '@wordpress/data';
 const CATEGORIES_LIST_QUERY = {
 	per_page: -1,
 };
-const PTYPES_LIST_QUERY = {
-	context: "view",
-};
 const MAX_POSTS_COLUMNS = 6;
 
 class LatestPostsEdit extends Component {
@@ -43,9 +40,6 @@ class LatestPostsEdit extends Component {
 		super( ...arguments );
 		this.state = {
 			categoriesList: [],
-		};
-		this.state = {
-			postTypesList: [],
 		};
 	}
 
@@ -64,21 +58,6 @@ class LatestPostsEdit extends Component {
 					this.setState( { categoriesList: [] } );
 				}
 			} );
-
-		this.fetchRequest = apiFetch( {
-			path: addQueryArgs( `/wp/v2/types`, PTYPES_LIST_QUERY ),
-		} )
-
-			.then( ( postTypesList ) => {
-				if ( this.isStillMounted ) {
-					this.setState( { postTypesList } );
-				}
-			} )
-			.catch( () => {
-				if ( this.isStillMounted ) {
-					this.setState( { postTypesList: [] } );
-				}
-			} );
 	}
 
 	componentWillUnmount() {
@@ -87,7 +66,7 @@ class LatestPostsEdit extends Component {
 
 	render() {
 		const { attributes, setAttributes, latestPosts } = this.props;
-		const { categoriesList , postTypesList } = this.state;
+		const { categoriesList } = this.state;
 		const {
 			displayPostContentRadio,
 			displayPostContent,
@@ -102,11 +81,18 @@ class LatestPostsEdit extends Component {
 			postType,
 			excerptLength,
 		} = attributes;
-		const pTypesListArr = Object.keys(postTypesList).reduce((acc, key) => {
-			acc.push({ key, value: postTypesList[key] });
-			return acc;
-		}, []);
-
+		 const postTypesList =  [
+			{
+				"name": "Posts",
+				"Slug": "post",
+			},
+			{
+				"name": "Pages",
+				"slug": "page",	
+			},
+	
+		];
+	  
 		const inspectorControls =  (
 			
 			<InspectorControls>
@@ -116,9 +102,9 @@ class LatestPostsEdit extends Component {
 						value={ postType  }
 						onChange={ ( value ) => setAttributes( { postType: value } ) }
 						>
-						{pTypesListArr.map( (row, rowIndex) => (
-
-						<option value={row.value.slug}>{ row.value.name}</option>
+						{postTypesList.map( (row, rowIndex) => (
+                
+						<option value={row.slug}>{ row.name}</option>
 						))}
 
 					</SelectControl>
@@ -266,7 +252,6 @@ class LatestPostsEdit extends Component {
 						else{
 							var excerpt = 'No Excerpt';
 						}
-						
 						
 						const excerptElement = document.createElement( 'div' );
 						excerptElement.innerHTML = excerpt;
