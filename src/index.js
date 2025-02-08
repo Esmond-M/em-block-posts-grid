@@ -48,5 +48,5 @@ export const settings = {
 		align: true,
 		html: false,
 	},
-	edit,
+	
 };
