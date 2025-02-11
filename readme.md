@@ -10,6 +10,6 @@ Currently can display the Post and Page post type. Ability to add custom post ty
 1. Download the latest version from [https://github.com/Esmond-M/em-block-posts-grid/blob/main/em-block-posts-grid.zip](https://github.com/Esmond-M/em-block-posts-grid/blob/main/em-block-posts-grid.zip)
 ![Alt text](/docs/download-button.png "download button")
 2. Upload `em-block-posts-grid` zip to the `/wp-content/plugins/` directory
-3. Extract zip folder
+3. Extract zip. Folder name of plugin should be "em-block-posts-grid".
 4. Activate the plugin through the 'Plugins' menu in WordPress
 
