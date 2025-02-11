@@ -1,3 +1,4 @@
+
 /**
  * External dependencies
  */
@@ -14,12 +15,11 @@ import {
 	QueryControls,
 	RadioControl,
 	RangeControl,
+	SelectControl,
 	Spinner,
 	ToggleControl,
 	ToolbarGroup,
 } from '@wordpress/components';
-import apiFetch from '@wordpress/api-fetch';
-import { addQueryArgs } from '@wordpress/url';
 import { __ } from '@wordpress/i18n';
 import { dateI18n, format, __experimentalGetSettings } from '@wordpress/date';
 import { InspectorControls, BlockControls } from '@wordpress/block-editor';
@@ -28,34 +28,17 @@ import { withSelect } from '@wordpress/data';
 /**
  * Module Constants
  */
-const CATEGORIES_LIST_QUERY = {
-	per_page: -1,
-};
+
 const MAX_POSTS_COLUMNS = 6;
 
 class LatestPostsEdit extends Component {
 	constructor() {
 		super( ...arguments );
-		this.state = {
-			categoriesList: [],
-		};
 	}
 
 	componentDidMount() {
 		this.isStillMounted = true;
-		this.fetchRequest = apiFetch( {
-			path: addQueryArgs( `/wp/v2/categories`, CATEGORIES_LIST_QUERY ),
-		} )
-			.then( ( categoriesList ) => {
-				if ( this.isStillMounted ) {
-					this.setState( { categoriesList } );
-				}
-			} )
-			.catch( () => {
-				if ( this.isStillMounted ) {
-					this.setState( { categoriesList: [] } );
-				}
-			} );
+
 	}
 
 	componentWillUnmount() {
@@ -64,7 +47,6 @@ class LatestPostsEdit extends Component {
 
 	render() {
 		const { attributes, setAttributes, latestPosts } = this.props;
-		const { categoriesList } = this.state;
 		const {
 			displayPostContentRadio,
 			displayPostContent,
@@ -74,13 +56,39 @@ class LatestPostsEdit extends Component {
 			columns,
 			order,
 			orderBy,
-			categories,
 			postsToShow,
+			postType,
 			excerptLength,
 		} = attributes;
-
-		const inspectorControls = (
+		 const postTypesList =  [
+			{
+				"name": "Posts",
+				"slug": "post",
+			},
+			{
+				"name": "Pages",
+				"slug": "page",	
+			},
+	
+		];
+	  
+		const inspectorControls =  (
+			
 			<InspectorControls>
+				<PanelBody title={ __( 'Post type settings' ) }>
+	`				<SelectControl
+						label="Post Type"
+						value={ postType  }
+						onChange={ ( value ) => setAttributes( { postType: value } ) }
+						>
+						{postTypesList.map( (row, rowIndex) => (
+                
+						<option value={row.slug}>{ row.name}</option>
+						))}
+
+					</SelectControl>
+				</PanelBody>
+
 				<PanelBody title={ __( 'Post content settings' ) }>
 					<ToggleControl
 						label={ __( 'Post Content' ) }
@@ -129,13 +137,8 @@ class LatestPostsEdit extends Component {
 					<QueryControls
 						{ ...{ order, orderBy } }
 						numberOfItems={ postsToShow }
-						categoriesList={ categoriesList }
-						selectedCategoryId={ categories }
 						onOrderChange={ ( value ) => setAttributes( { order: value } ) }
 						onOrderByChange={ ( value ) => setAttributes( { orderBy: value } ) }
-						onCategoryChange={ ( value ) =>
-							setAttributes( { categories: '' !== value ? value : undefined } )
-						}
 						onNumberOfItemsChange={ ( value ) => setAttributes( { postsToShow: value } ) }
 					/>
 					{ postLayout === 'grid' && (
@@ -202,11 +205,28 @@ class LatestPostsEdit extends Component {
 					} ) }
 				>
 					{ displayPosts.map( ( post, i ) => {
-						const titleTrimmed = post.title.rendered.trim();
-						let excerpt = post.excerpt.rendered;
-						if ( post.excerpt.raw === '' ) {
-							excerpt = post.content.raw;
+						if(post.title !== undefined){
+							var titleTrimmed = post.title.rendered.trim();
 						}
+						else{
+							var titleTrimmed = "No Title";
+						}
+
+                        if(post.excerpt !== undefined ){
+							var excerpt = post.excerpt.rendered;
+						}
+						else{
+							var excerpt = 'No Excerpt';
+						}
+			            if( post.excerpt  !== undefined){
+							if ( post.excerpt.raw === '' ) {
+								excerpt = post.content.raw;
+							}
+						}
+						else{
+							var excerpt = 'No Excerpt';
+						}
+						
 						const excerptElement = document.createElement( 'div' );
 						excerptElement.innerHTML = excerpt;
 						excerpt = excerptElement.textContent || excerptElement.innerText || '';
@@ -262,7 +282,7 @@ class LatestPostsEdit extends Component {
 }
 
 export default withSelect( ( select, props ) => {
-	const { postsToShow, order, orderBy, categories } = props.attributes;
+	const { postsToShow, order, orderBy, categories , postType} = props.attributes;
 	const { getEntityRecords } = select( 'core' );
 	const latestPostsQuery = pickBy(
 		{
@@ -270,10 +290,11 @@ export default withSelect( ( select, props ) => {
 			order,
 			orderby: orderBy,
 			per_page: postsToShow,
+			post_type: postType,
 		},
 		( value ) => ! isUndefined( value )
 	);
 	return {
-		latestPosts: getEntityRecords( 'postType', 'post', latestPostsQuery ),
+		latestPosts: getEntityRecords( 'postType', postType, latestPostsQuery ),
 	};
 } )( LatestPostsEdit );

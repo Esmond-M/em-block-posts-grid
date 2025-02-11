@@ -19,9 +19,6 @@
 		"className": {
             "type": "string"
         },
-		"categories": {
-            "type": "string"
-        },
 		"postsToShow": {
             "type": "number",
             "default": 5
@@ -50,6 +47,10 @@
             "type": "string",
             "default": "list"
         },
+        "postType": {
+            "type": "string",
+            "default": "post"
+        },
 		"columns": {
             "type": "number",
             "default": 3
@@ -67,6 +68,5 @@
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
-	"render": "file:./render.php",
 	"viewScript": "file:./view.js"
 }

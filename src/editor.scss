@@ -1,24 +1,34 @@
 /**
- * The following styles get applied both on the front of your site
- * and in the editor.
+ * Contains the additional styles applied to the block in the Block Editor. 
+ * You will often use this file for styles specific to the block's user interface.
  *
- * Replace them with your own styles or remove the file completely.
  */
 
- .em-block-latest-posts {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+ $font-stack: sans-serif;
+ $hover-color: red;
+ @mixin emflexrow{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+  }
+
+.em-block-latest-posts {
+
+    @include emflexrow();
+
+    li {
+        width:30%;
+        padding: 0 10px 10px 10px;
+        list-style: none;    
+    }
+
+    li:hover{
+    transition: 0.6s ease;
+    color:$hover-color;
+    animation: zoomIn 1s ease forwards;    
+    }
 }
-.em-block-latest-posts li {
-    width:30%;
-    padding: 0 10px 10px 10px;
-    list-style: none;    
-}
+
 .em-block-latest-posts__post-date {
     display: block;
 }
@@ -28,32 +38,66 @@
     max-width: 260px;
 }
 .em-block-latest-posts__list{
-    display: -webkit-box;
-    display: -moz-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+
+    @include emflexrow();
+
+    li {
+        width:30%;
+        padding: 0 10px 10px 10px;
+        list-style: none;  
+        font:$font-stack;
+    }
+
+    li:hover{
+        transition: 0.6s ease;
+        color:$hover-color;
+        animation: zoomIn 1s ease forwards;    
+    }
 }
-.em-block-latest-posts__list li {
-    width:30%;
-    padding: 0 10px 10px 10px;
-    list-style: none;  
-}
+
 @media only screen 
 and (max-width : 1199px) {
 
     .em-block-latest-posts {
         flex-direction: column;
+        
+        li {
+            width:100%;
+        }
     }
-    .em-block-latest-posts li {
-        width:100%;
-    }
+
     .em-block-latest-posts__list{
         flex-direction: column;
+        
+        li {
+            width:100%; 
+        }
     }
-    .em-block-latest-posts__list li {
-        width:100%; 
+
+}
+
+
+
+@-webkit-keyframes zoomIn {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(.3,.8,.8);
+        transform: scale3d(.8,.8,.8)
+    }
+
+    50% {
+        opacity: 1
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        -webkit-transform: scale3d(.8,.8,.8);
+        transform: scale3d(.8,.8,.8)
+    }
+
+    50% {
+        opacity: 1
     }
 }
