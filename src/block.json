@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "EM Posts Grid",
 	"category": "widgets",
-	"icon": "table",
+
 	"description": "Show posts in various formats",
 	"example": {},
 	"supports": {
