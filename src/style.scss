@@ -11,26 +11,6 @@
     flex-wrap: wrap;
   }
 
-.em-block-latest-posts {
-
-    @include emflexrow();
-
-    li {
-        width:30%;
-        padding: 0 10px 10px 10px;
-        list-style: none;    
-    }
-
-    li:hover{
-    transition: 0.6s ease;
-    color:$hover-color;
-    animation: zoomIn 1s ease forwards;    
-    }
-}
-
-.em-block-latest-posts__post-date {
-    display: block;
-}
 .em-block-featured-img {
     display: block;    
     width: 100%;
@@ -46,8 +26,10 @@
         list-style: none;  
         font:$font-stack;
     }
-
-    li:hover{
+    li a:hover{
+        color:$hover-color;
+    }
+    li:hover img{
         transition: 0.6s ease;
         color:$hover-color;
         animation: zoomIn 1s ease forwards;    
