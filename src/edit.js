@@ -1,4 +1,5 @@
 
+import placeholderimg from '../assets/img/blog-placeholder.jpg'; // Tell webpack this JS file uses this image
 /**
  * External dependencies
  */
@@ -232,10 +233,12 @@ class LatestPostsEdit extends Component {
 						excerpt = excerptElement.textContent || excerptElement.innerText || '';
 						return (
 							<li key={ i }>
-								{ displayFeaturedImage && (
+								{ displayFeaturedImage &&  post.fimg_url &&(
 									<img class="em-block-featured-img" src={ post.fimg_url }/>
 								) }								
-								
+								{ displayFeaturedImage &&  !post.fimg_url &&(
+									<img class="em-block-featured-img" src={placeholderimg} />
+								) }									
 								<a href={ post.link } target="_blank" rel="noreferrer noopener">
 									{ titleTrimmed ? <RawHTML>{ titleTrimmed }</RawHTML> : __( '(no title)' ) }
 								</a>

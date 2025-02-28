@@ -7,6 +7,7 @@
 	"main": "build/index.js",
 	"files": [
 		"/build",
+		"/assets",
 		"em-block-posts-grid.php",
 		"/includes"
 	],
