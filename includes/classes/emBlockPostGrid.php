@@ -94,11 +94,21 @@ if (!class_exists('emBlockPostGrid')) {
             }
 
             if ( isset( $attributes['displayFeaturedImage'] ) && $attributes['displayFeaturedImage']=== true ) {
-                $list_items_markup .= sprintf(
-                    '<li><img class="em-block-featured-img" src="' . $image_url . '" /><a href="%1$s">%2$s</a>',
-                    esc_url( get_permalink( $post ) ),
-                    $title
-                );   
+                if($image_url){ // check if there is an assigned featured image
+                    $list_items_markup .= sprintf(
+                        '<li><img class="em-block-featured-img" src="' . $image_url . '" /><a href="%1$s">%2$s</a>',
+                        esc_url( get_permalink( $post ) ),
+                        $title
+                    ); 
+                }
+                else{// put place holder for no image
+                    $list_items_markup .= sprintf(
+                        '<li><img class="em-block-featured-img" src="' . plugin_dir_url( __DIR__) . '../assets/img/blog-placeholder.jpg" /><a href="%1$s">%2$s</a>',
+                        esc_url( get_permalink( $post ) ),
+                        $title
+                    );   
+                }
+  
             }
             else{
                 $list_items_markup .= sprintf(
